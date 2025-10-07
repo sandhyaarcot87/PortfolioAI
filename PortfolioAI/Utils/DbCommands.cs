@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace PortfolioAI;
+namespace PortfolioAI.Utils;
 
     using Microsoft.Data.Sqlite;
 

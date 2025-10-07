@@ -1,4 +1,4 @@
-﻿namespace PortfolioAI
+﻿namespace PortfolioAI.Utils
 {
     public class UtilityClass
     {

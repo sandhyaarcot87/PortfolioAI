@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Packaging;
 
-namespace PortfolioAI;
+namespace PortfolioAI.Utils;
 
 public class ResumeChunker
 {

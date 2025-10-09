@@ -1,6 +1,7 @@
 ﻿namespace PortfolioAI.EndPoints
 {
     using Azure.AI.OpenAI;
+    using DocumentFormat.OpenXml.Packaging;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
@@ -64,9 +65,11 @@
             });
 
             app.MapGet("/download-resume", (ResumeService resumeSvc) => resumeSvc.DownloadResumeAsync());
-
+            app.MapGet("/api/resume-sections", (ResumeService resumeSvc) => resumeSvc.GetSections());
+           
             return app;
         }
+
     }
 
 }

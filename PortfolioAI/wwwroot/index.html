@@ -5,300 +5,360 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sandhya Arcot – AI Resume Assistant</title>
     <style>
+        :root {
+            --primary: #0078d7;
+            --accent: #a855f7;
+            --bg: #0a0c1b;
+            --text: #e6e6e6;
+            --muted: #9ca3af;
+        }
+
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7f9fc;
             margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
         header {
-            background: linear-gradient(90deg, #0056b3, #0078d7);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 60px;
+            background-color: rgba(10, 12, 27, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
             header h1 {
-                margin: 0;
-                font-size: 1.8rem;
-            }
-
-            header p {
-                margin: 5px 0 0;
-                font-size: 1rem;
-                opacity: 0.9;
-            }
-
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            height: 100%;
-        }
-
-        /* Left chat area */
-        #chatContainer {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        #chat {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            border-bottom: 1px solid #eee;
-        }
-
-        #inputArea {
-            display: flex;
-            padding: 10px;
-            background-color: #f1f4f8;
-            gap: 10px;
-        }
-
-        #userInput {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        #sendBtn {
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 18px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.2s;
-        }
-
-            #sendBtn:hover {
-                background-color: #005fa3;
-            }
-
-        #rightPanel {
-            flex: 1;
-            margin: 0;
-            border-radius: 10px;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: flex-start;
-            padding: 0;
-            text-align: center;
-            gap: 4px;
-        }
-
-        /* Chat placeholder fills all remaining space */
-        .chat-placeholder {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9fafb;
-            margin: 0 8px;
-            overflow: hidden;
-        }
-
-            /* Message area centers the text */
-            .chat-placeholder .messages {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #555;
-                font-size: 0.95rem;
-                font-style: italic;
-            }
-
-            /* Bottom input area stays fixed inside placeholder */
-            .chat-placeholder .input-area {
-                display: flex;
-                background-color: #eef1f5;
-                padding: 8px;
-                gap: 8px;
-            }
-
-        /* Contact info stays pinned to bottom */
-        .contact-section {
-            font-size: 0.9rem;
-            color: #444;
-            text-align: center;
-            margin: 8px 0;
-            padding: 4px;
-        }
-
-            .chat-placeholder input {
-                flex: 1;
-                padding: 8px;
-                border-radius: 6px;
-                border: 1px solid #ccc;
-                font-size: 0.95rem;
-            }
-
-            .chat-placeholder button {
-                background-color: #bbb;
+                font-size: 1.3rem;
                 color: white;
-                border: none;
-                border-radius: 6px;
-                padding: 8px 16px;
-                font-size: 0.95rem;
-                cursor: not-allowed;
+                margin: 0;
             }
 
-        /* Buttons stay compact at top */
-        .profile-buttons {
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+            nav a:hover {
+                color: var(--accent);
+            }
+
+        /* Hero Section */
+        .hero {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin: 0;
-            padding: 8px;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            padding: 100px 60px;
         }
 
-        .profile-button {
-            background-color: #0078d7;
-            color: white;
-            border: none;
+        .profile-pic {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(168,85,247,0.4), transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-pic-inner {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: #1f2937;
+            background-image: url('/Images/ProfileImage.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 3px solid var(--accent);
+        }
+
+        .intro {
+            max-width: 600px;
+        }
+
+            .intro h2 {
+                font-size: 2.5rem;
+                color: white;
+            }
+
+            .intro p {
+                color: var(--muted);
+                line-height: 1.6;
+            }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
             border-radius: 8px;
-            padding: 15px;
-            font-size: 1rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
             cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s, transform 0.1s;
         }
 
-            .profile-button:hover {
-                background-color: #005fa3;
-                transform: scale(1.02);
-            }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
 
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent);
+        }
 
-            .contact-section p {
-                margin: 6px 0;
-            }
+        .btn:hover {
+            opacity: 0.85;
+        }
 
-            .contact-section a {
-                color: #0078d7;
+        /* Contact Section */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--muted);
+            border-top: 1px solid #1f2937;
+        }
+
+            footer a {
+                color: var(--accent);
                 text-decoration: none;
             }
 
-                .contact-section a:hover {
+                footer a:hover {
                     text-decoration: underline;
                 }
 
-        /* Chat message formatting */
-        .chat-message {
-            margin: 8px 0;
+        /* Floating Chat */
+        .chat-bubble {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 30px;
+            padding: 14px 22px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .chat-bubble:hover {
+                transform: scale(1.05);
+            }
+
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 25px;
+            width: 400px; /* wider */
+            height: 600px; /* taller window */
+            background-color: #111326;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: var(--primary);
+            padding: 14px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .chat-messages {
+            flex: 1; /* this makes it take all leftover space */
+            padding: 16px;
+            overflow-y: auto;
+            color: white;
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             line-height: 1.5;
         }
 
-            .chat-message strong {
-                color: #0078d7;
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #333;
+            background-color: #0f111f;
+        }
+
+            .chat-input input {
+                flex: 1;
+                border: none;
+                padding: 12px;
+                background: transparent;
+                color: white;
+                font-size: 0.9rem;
             }
 
-            .chat-message pre {
-                background-color: #f4f4f4;
-                padding: 8px;
-                border-radius: 6px;
-                white-space: pre-wrap;
-                word-wrap: break-word;
+            .chat-input button {
+                background-color: var(--accent);
+                border: none;
+                color: white;
+                padding: 12px 18px;
+                cursor: pointer;
+                font-weight: 500;
             }
 
-        @media (max-width: 900px) {
-            main {
-                flex-direction: column;
+                .chat-input button:disabled {
+                    background-color: #444;
+                    cursor: not-allowed;
+                }
+
+        .content-section {
+            padding: 80px 60px;
+            background-color: #0f111f;
+            border-top: 1px solid #1f2937;
+        }
+
+            .content-section h2 {
+                color: var(--accent);
+                font-size: 2rem;
+                margin-bottom: 20px;
             }
 
-            #chatContainer, #rightPanel {
-                margin: 10px;
+            .content-section p {
+                color: var(--muted);
+                line-height: 1.6;
             }
 
-            #rightPanel {
-                height: auto;
-            }
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Sandhya Arcot – AI Resume Assistant</h1>
-        <p>Ask questions about my experience, skills, or projects</p>
+        <h1>Sandhya Arcot</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#" onclick="scrollToSection('experience')">About</a>
+            <a href="#" onclick="scrollToSection('projects')">Work Experience</a>
+            <a href="#" onclick="scrollToSection('skills')">Skills</a>
+            <a href="#" onclick="scrollToSection('education')">Education</a>
+            <a href="#" onclick="scrollToSection('contact')">Contact</a>
+        </nav>
     </header>
 
-    <main>
-        <!-- Left: Chat section -->
-        <section id="chatContainer">
-            <div id="chat"></div>
-
-            <div id="inputArea">
-                <input type="text" id="userInput" placeholder="Ask something about my resume..." />
-                <button id="sendBtn">Send</button>
+    <section class="hero" id="home">
+        <div class="profile-pic">
+            <div class="profile-pic-inner">
             </div>
-        </section>
-
-        <!-- Right: Profile info -->
-        <aside id="rightPanel">
-
-
-            <!-- Other feature buttons -->
-            <div class="profile-buttons">
-                <button class="profile-button" onclick="sendFeatureQuery('Projects')">Projects</button>
-                <button class="profile-button" onclick="sendFeatureQuery('Experience')">Experience</button>
-                <button class="profile-button" onclick="downloadResume()">Download Resume</button>
+        </div>
+        <div class="intro">
+            <h2>Hello, I'm <span style="color: var(--accent)">Sandhya Arcot</span></h2>
+            <p>
+                I build intelligent, user-friendly solutions using modern frameworks and AI technologies.
+                My goal is to design clean, scalable software that bridges creativity with functionality.
+            </p>
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('contact')">Contact</button>
+                <button class="btn btn-secondary" onclick="downloadResume()">Download Resume</button>
             </div>
+        </div>
+    </section>
 
-            <!-- Chat with Sandhya placeholder -->
-            <div class="chat-placeholder">
-                <div class="messages">💬 Chat with Sandhya — Coming Soon...</div>
-                <div class="input-area">
-                    <input type="text" placeholder="Type a message..." disabled />
-                    <button disabled>Send</button>
-                </div>
-            </div>
+    <!-- Experience Section -->
+    <section id="experience" class="content-section">
+        <h2>About Me</h2>
+        <div id="summaryContent">Loading...</div>
+    </section>
 
-            <!-- Contact section -->
-            <div class="contact-section">
-                <p><strong>Phone:</strong> 647-355-9336</p>
-                <p><strong>Email:</strong> <a href="mailto:sandhya.arcot@gmail.com">sandhya.arcot@gmail.com</a></p>
-                <p><strong>LinkedIn:</strong> <a href="https://in.linkedin.com/in/sandhya-arcot-363762131" target="_blank">Sandhya-Arcot</a></p>
-            </div>
-        </aside>
-    </main>
+    <!-- Projects Section -->
+    <section id="projects" class="content-section">
+        <h2>Work Experience</h2>
+        <div id="projectsContent">Loading...</div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="skills" class="content-section">
+        <h2>Skills</h2>
+        <div id="skillsContent">Loading...</div>
+    </section>
+
+    <section id="education" class="content-section">
+        <h2>Education</h2>
+        <div id="educationContent">Loading...</div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section">
+        <h2>Contact</h2>
+        <p><strong>Phone:</strong> 647-355-9336</p>
+        <p><strong>Email:</strong> <a href="mailto:sandhya.arcot@gmail.com">sandhya.arcot@gmail.com</a></p>
+        <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/sandhya-arcot" target="_blank">linkedin.com/in/sandhya-arcot</a></p>
+    </section>
+
+
+    <div class="chat-bubble" onclick="toggleChat()">
+        💬 Chat with Sandhya’s AI
+    </div>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">Sandhya’s AI Assistant</div>
+        <div class="chat-messages" id="chatMessages">
+            <div>👋 Hi! Ask me anything about Sandhya’s experience or projects.</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type a message..." />
+            <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 
     <script>
-        const apiUrl = "/api/chat";
-        const chatDiv = document.getElementById("chat");
-        const userInput = document.getElementById("userInput");
-        const sendBtn = document.getElementById("sendBtn");
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+        }
 
-        function appendMessage(sender, message) {
-            const p = document.createElement("div");
-            p.classList.add("chat-message");
+        // Fetch Experience and Projects from API (auto-loaded from your docx)
+        window.onload = async function () {
+            try {
+                const res = await fetch("/api/resume-sections");
+                const data = await res.json();
 
-            const formattedMessage = message
-                .replace(/\n{2,}/g, "<br><br>")
-                .replace(/\n/g, "<br>");
+                document.getElementById("summaryContent").innerHTML = data.summary || "No experience found.";
+                document.getElementById("skillsContent").innerHTML = data.skills || "No projects found.";
+                document.getElementById("projectsContent").innerHTML = data.projects || "No projects found.";
+                document.getElementById("educationContent").innerHTML = data.education || "No projects found.";
 
-            p.innerHTML = `<strong>${sender}:</strong><br><pre>${formattedMessage}</pre>`;
-            chatDiv.appendChild(p);
-            chatDiv.scrollTop = chatDiv.scrollHeight;
+            } catch (error) {
+                console.error("Error loading resume:", error);
+            }
+        };
+
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+
+        function toggleChat() {
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function contactSandhya() {
+            window.location.href = "mailto:sandhya.arcot@gmail.com";
         }
 
         function downloadResume() {
@@ -306,52 +366,13 @@
         }
 
         async function sendMessage() {
-            const message = userInput.value.trim();
+            const message = chatInput.value.trim();
             if (!message) return;
 
             appendMessage("You", message);
-            userInput.value = "";
+            chatInput.value = "";
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message })
-                });
-
-                if (!response.ok) {
-                    appendMessage("Error", `HTTP ${response.status}`);
-                    return;
-                }
-
-                const data = await response.json();
-                appendMessage("AI", data.reply || JSON.stringify(data));
-            } catch (err) {
-                appendMessage("Error", err.message);
-            }
-        }
-
-        function comingSoon(feature) {
-            alert(`${feature} – Coming soon!`);
-        }
-
-        sendBtn.addEventListener("click", sendMessage);
-        userInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") sendMessage();
-        });
-
-        async function sendFeatureQuery(feature) {
-            // Predefined messages for AI
-            let message = "";
-
-            if (feature === "Experience") {
-                message = "Please provide my professional experience in detail.";
-            } else if (feature === "Projects") {
-                message = "Please provide my projects in detail.";
-            }
-
-            // Display user message in chat
-            appendMessage("You", `Providing details on ${feature}...`);
+            appendMessage("AI", "Thinking...");
 
             try {
                 const response = await fetch("/api/chat", {
@@ -360,16 +381,19 @@
                     body: JSON.stringify({ message })
                 });
 
-                if (!response.ok) {
-                    appendMessage("Error", `HTTP ${response.status}`);
-                    return;
-                }
-
                 const data = await response.json();
-                appendMessage("AI", data.reply || JSON.stringify(data));
+                document.querySelectorAll(".chat-messages div:last-child")[0]?.remove();
+                appendMessage("AI", data.reply || "No response received.");
             } catch (err) {
                 appendMessage("Error", err.message);
             }
+        }
+
+        function appendMessage(sender, text) {
+            const div = document.createElement("div");
+            div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     </script>
 </body>

@@ -248,6 +248,107 @@
         html {
             scroll-behavior: smooth;
         }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Container for the sections */
+        .info-container {
+            display: flex;
+            gap: 20px; /* space between bubbles */
+            flex-wrap: wrap; /* stacks on smaller screens */
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            flex: 1 1 300px;
+            background-color: #111326;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .info-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+            }
+
+            .info-card .icon {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .info-card h3 {
+                margin: 10px 0 8px;
+                color: var(--accent);
+            }
+
+        .info-container h2 {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .info-card h2 {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .info-card p {
+            color: var(--muted);
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .experience-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .company-card {
+            background-color: #111326;
+            border-radius: 16px;
+            padding: 20px 25px;
+            text-align: left;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .company-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            }
+
+            .company-card h3 {
+                color: var(--accent);
+                margin-bottom: 8px;
+            }
+
+            .company-card .company-content {
+                color: var(--muted);
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            .company-card ul {
+                margin-left: 20px;
+                list-style-type: disc;
+            }
+
+            .company-card p {
+                margin-bottom: 10px;
+            }
+
+        
     </style>
 </head>
 <body>
@@ -282,30 +383,36 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="content-section">
+    <section id="experience" class="info-card">
         <h2>About Me</h2>
         <div id="summaryContent">Loading...</div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="content-section">
+    <!-- Work Experience Section -->
+    <section id="projects" class="info-container">
         <h2>Work Experience</h2>
-        <div id="projectsContent">Loading...</div>
+        <div id="projectsContent" class="experience-container">Loading...</div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="skills" class="content-section">
-        <h2>Skills</h2>
-        <div id="skillsContent">Loading...</div>
-    </section>
 
-    <section id="education" class="content-section">
-        <h2>Education</h2>
-        <div id="educationContent">Loading...</div>
+    <section id="mix" class="info-container">
+
+        <!-- Projects Section -->
+        <div id="skills" class="info-card">
+            <h2>Skills</h2>
+            <div id="skillsContent">Loading...</div>
+        </div>
+
+        <div id="education" class="info-card">
+            <h2>Education</h2>
+            <div id="educationContent">Loading...</div>
+        </div>
+
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="content-section">
+    <section id="contact" class="info-card">
         <h2>Contact</h2>
         <p><strong>Phone:</strong> 647-355-9336</p>
         <p><strong>Email:</strong> <a href="mailto:sandhya.arcot@gmail.com">sandhya.arcot@gmail.com</a></p>
@@ -334,20 +441,37 @@
         }
 
         // Fetch Experience and Projects from API (auto-loaded from your docx)
-        window.onload = async function () {
+        window.onload = window.onload = async function () {
             try {
                 const res = await fetch("/api/resume-sections");
                 const data = await res.json();
 
-                document.getElementById("summaryContent").innerHTML = data.summary || "No experience found.";
-                document.getElementById("skillsContent").innerHTML = data.skills || "No projects found.";
-                document.getElementById("projectsContent").innerHTML = data.projects || "No projects found.";
-                document.getElementById("educationContent").innerHTML = data.education || "No projects found.";
+                // Load summary, skills, education
+                document.getElementById("summaryContent").innerHTML = data.summary || "No summary found.";
+                document.getElementById("skillsContent").innerHTML = data.skills || "No skills found.";
+                document.getElementById("educationContent").innerHTML = data.education || "No education found.";
+
+                // Work Experience: dynamically create company cards
+                const container = document.getElementById("projectsContent");
+                if (data.workExperiences && data.workExperiences.length > 0) {
+                    container.innerHTML = data.workExperiences
+                        .map(w => `
+          <div class="company-card">
+            <h3>${w.company}</h3>
+            <div class="company-content">${w.html}</div>
+          </div>
+        `)
+                        .join("");
+                } else {
+                    container.innerHTML = "<p>No work experience found.</p>";
+                }
 
             } catch (error) {
                 console.error("Error loading resume:", error);
+                document.getElementById("projectsContent").innerHTML = "<p>Failed to load work experience.</p>";
             }
         };
+
 
         const chatWindow = document.getElementById('chatWindow');
         const chatInput = document.getElementById('chatInput');

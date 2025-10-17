@@ -38,7 +38,7 @@
 
 public async Task<IResult> GetSections()
     {
-        var filePath = Path.Combine(_env.ContentRootPath, "AppData", "Sandhya_Arcot.docx");
+        var filePath = Path.Combine(_env.ContentRootPath, "AppData", "Sandhya_Resume_Full_Enhanced.docx");
 
         if (!File.Exists(filePath))
             return Results.NotFound(new { message = "Resume file not found." });
@@ -49,13 +49,21 @@ public async Task<IResult> GetSections()
         string html;
         using (var doc = WordprocessingDocument.Open(tempFile, true))
         {
-            var settings = new HtmlConverterSettings() { PageTitle = "Resume" };
-            html = HtmlConverter.ConvertToHtml(doc, settings).ToString(SaveOptions.DisableFormatting);
-        }
-        File.Delete(tempFile);
+                var settings = new HtmlConverterSettings()
+                {
+                    PageTitle = "Resume",
+                    FabricateCssClasses = true,
+                    RestrictToSupportedLanguages = false,
+                    RestrictToSupportedNumberingFormats = false
+                };
+
+                var htmle = HtmlConverter.ConvertToHtml(doc, settings);
+                html = htmle.ToStringNewLineOnAttributes();
+            }
+            File.Delete(tempFile);
 
         // Extract top-level sections
-        string summary = ExtractHtmlSection(html, "SUMMARY OF QUALIFICATIONS", "AREAS OF EXPERTISE");
+        string summary = ExtractHtmlSection(html, "ABOUT ME", "AREAS OF EXPERTISE");
         string skills = ExtractHtmlSection(html, "AREAS OF EXPERTISE", "WORK EXPERIENCE");
         string workExperienceHtml = ExtractHtmlSection(html, "WORK EXPERIENCE", "EDUCATION &amp; CERTIFICATIONS");
         string education = ExtractHtmlSection(html, "EDUCATION &amp; CERTIFICATIONS", "");
@@ -66,7 +74,7 @@ public async Task<IResult> GetSections()
             return a;
     }
 
-    private string ExtractHtmlSection(string html, string sectionStart, string nextSection)
+        private string ExtractHtmlSection(string html, string sectionStart, string nextSection)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
@@ -100,77 +108,88 @@ public async Task<IResult> GetSections()
         return sb.Length > 0 ? $"<div>{sb}</div>" : "";
     }
 
-    private List<object> ExtractWorkExperienceSectionsAuto(string workHtml)
-    {
-        var doc = new HtmlDocument();
-        doc.LoadHtml(workHtml);
-
-        var nodes = doc.DocumentNode.SelectNodes("//h1 | //h2 | //h3 | //p | //div | //ul | //ol");
-        if (nodes == null)
-            return new List<object>();
-
-        var result = new List<(string Company, string Html)>();
-        StringBuilder sb = null;
-        string currentCompany = null;
-
-        foreach (var node in nodes)
+        private List<object> ExtractWorkExperienceSectionsAuto(string workHtml)
         {
-            bool isPotentialCompanyHeader = false;
-            string cleanText = node.InnerText.Trim();
+            var doc = new HtmlDocument();
+            doc.LoadHtml(workHtml);
 
-            // Case 1: Explicit heading tags
-            if (node.Name.Equals("h2", StringComparison.OrdinalIgnoreCase) ||
-                node.Name.Equals("h3", StringComparison.OrdinalIgnoreCase))
-            {
-                isPotentialCompanyHeader = true;
-            }
-            // Case 2: Fully bold paragraphs (common for company names)
-            else if (node.Name == "p" && Regex.IsMatch(node.InnerHtml, @"^<b>.*?</b>$", RegexOptions.IgnoreCase))
-            {
-                isPotentialCompanyHeader = true;
-            }
-            // Case 3: Paragraphs with ALL CAPS short text (like “MICROSOFT”)
-            else if (node.Name == "p" && cleanText.Length > 2 &&
-                     cleanText.Length < 50 && cleanText == cleanText.ToUpper())
-            {
-                isPotentialCompanyHeader = true;
-            }
+            var nodes = doc.DocumentNode.SelectNodes("//h1 | //h2 | //h3 | //p | //div | //ul | //ol");
+            if (nodes == null)
+                return new List<object>();
 
-            if (isPotentialCompanyHeader)
+            var results = new List<object>();
+            StringBuilder sb = null;
+            string currentCompany = null;
+            string currentRole = null;
+
+            foreach (var node in nodes)
             {
-                // If we were collecting, save the previous one
-                if (sb != null && !string.IsNullOrEmpty(currentCompany))
+                bool isHeader = false;
+                string cleanText = node.InnerText.Trim();
+                cleanText = cleanText.Replace("", "").Replace("•", "").Trim();
+                // Detect potential new company section
+                if (node.Name.Equals("h2", StringComparison.OrdinalIgnoreCase) ||
+                    node.Name.Equals("h3", StringComparison.OrdinalIgnoreCase))
                 {
-                    result.Add(($"<div>{currentCompany}</div>", $"<div>{sb}</div>"));
-                    sb = null;
+                    isHeader = true;
+                }
+               
+                // When we find a new section, save the previous
+                if (isHeader)
+                {
+                    if (sb != null && !string.IsNullOrEmpty(currentCompany))
+                    {
+                        results.Add(new
+                        {
+                            company = currentCompany,
+                            role = currentRole ?? "",
+                            html = $"<div>{sb}</div>"
+                        });
+                        sb = null;
+                    }
+
+                    // Parse out company and role from same line if possible
+                    currentCompany = cleanText;
+                    currentRole = null;
+                    sb = new StringBuilder();
+                    continue;
                 }
 
-                currentCompany = cleanText;
-                sb = new StringBuilder();
-                continue;
+                if (sb != null)
+                {
+                    // Attempt to parse known info types
+                     if (currentRole == null && cleanText.Length < 80 && !cleanText.Contains("•"))
+                        currentRole = cleanText;
+                    else
+                        sb.Append(node.OuterHtml);
+                }
             }
 
-            if (sb != null)
-                sb.Append(node.OuterHtml);
-        }
-
-        if (sb != null && !string.IsNullOrEmpty(currentCompany))
-            result.Add(($"<div>{currentCompany}</div>", $" <div>{sb}</div>"));
-
-            var workExperiences = new List<object>();
-            foreach (var section in result)
+            // Final section
+            if (sb != null && !string.IsNullOrEmpty(currentCompany))
             {
-                workExperiences.Add(new
+                results.Add(new
                 {
-                    company = section.Company,
-                    html = section.Html
+                    company = currentCompany,
+                    role = currentRole ?? "",
+                    html = $"<div>{sb}</div>"
                 });
             }
 
-            return workExperiences;
+            // Optional: extract bullet points cleanly
+            foreach (dynamic r in results)
+            {
+                // Convert HTML list items to text array
+                var innerDoc = new HtmlDocument();
+                innerDoc.LoadHtml(r.html);
+                var bullets = innerDoc.DocumentNode.SelectNodes("//li")?.Select(li => li.InnerText.Trim()).ToList() ?? new List<string>();
+
+                r.GetType().GetProperty("bullets")?.SetValue(r, bullets);
+            }
+
+            return results;
+        }
+
     }
-
-
-}
 
 }

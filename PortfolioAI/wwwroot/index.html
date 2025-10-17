@@ -347,6 +347,154 @@
             .company-card p {
                 margin-bottom: 10px;
             }
+        .about-section {
+            background-color: #0f111f;
+            padding: 80px 60px;
+            text-align: center;
+            border-top: 1px solid #1f2937;
+        }
+
+            .about-section h2 {
+                color: var(--accent);
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+
+        .about-subtitle {
+            color: var(--muted);
+            font-size: 1rem;
+            margin-bottom: 50px;
+        }
+
+        .about-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px; /* increased gap between bio and cards */
+            align-items: flex-start;
+        }
+
+        .about-left {
+            flex: 1 1 400px;
+            background-color: #111326;
+            border-radius: 16px;
+            padding: 30px 40px;
+            text-align: left;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+            .about-left h3 {
+                color: var(--accent);
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .about-left p {
+                color: var(--muted);
+                line-height: 1.6;
+                font-size: 0.98rem;
+                margin-bottom: 15px;
+            }
+
+        .about-right {
+            flex: 1 1 600px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 40px; /* ensures gap between columns and rows */
+            justify-content: center;
+            align-items: stretch;
+            margin-top: 40px;
+            padding: 0 20px; /* adds small padding from container edges */
+        }
+
+        .about-card {
+            background-color: #111326;
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 280px;
+            justify-self: center; /* forces even spacing in grid cells */
+        }
+
+
+            .about-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            }
+
+            .about-card .icon {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .about-card h4 {
+                color: var(--accent);
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
+            .about-card p {
+                color: var(--muted);
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+        .experience-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .experience-card {
+            background-color: #111326;
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .experience-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            }
+
+            .experience-card h3 {
+                color: var(--accent);
+                margin-bottom: 5px;
+            }
+
+            .experience-card .duration {
+                color: var(--muted);
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+
+            .experience-card ul {
+                margin: 0;
+                padding-left: 20px;
+                color: var(--text);
+                font-size: 0.95rem;
+            }
+
+            .experience-card .tags {
+                margin-top: 15px;
+            }
+
+        .tag {
+            display: inline-block;
+            background-color: #1e2136;
+            border-radius: 12px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-right: 8px;
+            margin-top: 5px;
+        }
 
         
     </style>
@@ -383,14 +531,61 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="info-card">
+    <section id="experience" class="about-section">
         <h2>About Me</h2>
-        <div id="summaryContent">Loading...</div>
+        <p class="about-subtitle">
+            Get to know me better and understand my passion for creating intelligent, high-performance software experiences.
+        </p>
+
+        <div class="about-container">
+            <div class="about-left">
+                <h3>Who I Am</h3>
+                <div id="summaryContent">Loading...</div>
+            </div>
+
+            <div class="about-right">
+                <div class="about-card">
+                    <div class="icon">🖥️</div>
+                    <h4>Desktop Development</h4>
+                    <p>Expert in building high-performance desktop applications using WPF, C#, and MVVM — delivering smooth, responsive user experiences.</p>
+                </div>
+
+                <div class="about-card">
+                    <div class="icon">🧠</div>
+                    <h4>Algorithms & Optimization</h4>
+                    <p>Skilled in implementing complex algorithms for performance-critical workflows and optimizing multithreaded systems.</p>
+                </div>
+
+                <div class="about-card">
+                    <div class="icon">🖼️</div>
+                    <h4>Image Processing & Manipulation</h4>
+                    <p>Experienced in developing advanced image visualization, analysis, and modification tools for medical and scientific software.</p>
+                </div>
+
+                <div class="about-card">
+                    <div class="icon">☁️</div>
+                    <h4>Microservices Architecture</h4>
+                    <p>Designing modular, API-first systems using .NET Minimal APIs and service-oriented architecture for scalability and maintainability.</p>
+                </div>
+
+                <div class="about-card">
+                    <div class="icon">🌐</div>
+                    <h4>Cross-Domain Expertise</h4>
+                    <p>Strong background across healthcare, imaging, and life sciences — building reliable, user-focused systems that make an impact.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">🤖</div>
+                    <h4>AI & Automation</h4>
+                    <p>Leveraging AI-assisted tools to accelerate development and deliver smarter solutions.</p>
+                </div>
+            </div>
+
+        </div>
     </section>
 
     <!-- Projects Section -->
     <!-- Work Experience Section -->
-    <section id="projects" class="info-container">
+    <section id="projects" class="about-section">
         <h2>Work Experience</h2>
         <div id="projectsContent" class="experience-container">Loading...</div>
     </section>
@@ -453,14 +648,14 @@
 
                 // Work Experience: dynamically create company cards
                 const container = document.getElementById("projectsContent");
-                if (data.workExperiences && data.workExperiences.length > 0) {
+                if (Array.isArray(data.workExperiences) && data.workExperiences.length > 0) {
                     container.innerHTML = data.workExperiences
                         .map(w => `
-          <div class="company-card">
-            <h3>${w.company}</h3>
-            <div class="company-content">${w.html}</div>
-          </div>
-        `)
+      <div class="experience-card">
+        <h3>${w.role || ''} — <span class="company">${w.company || ''}</span></h3>
+        <div class="company-content">${w.html || ''}</div>
+      </div>
+    `)
                         .join("");
                 } else {
                     container.innerHTML = "<p>No work experience found.</p>";

@@ -21,6 +21,9 @@
     <None Update="AppData\Sandhya_Arcot.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="AppData\Sandhya_Resume_Full_Enhanced.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

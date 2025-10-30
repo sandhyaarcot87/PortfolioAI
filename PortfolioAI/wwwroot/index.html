@@ -660,7 +660,7 @@
 </head>
 <body>
     <header>
-        <h1>Sandhya Arcot</h1>
+        <h1 style="cursor:pointer;" onclick="scrollToSection('home')">Sandhya Arcot</h1>
         <nav id="mainNav">
             <a href="#" onclick="scrollToSection('home')">Home</a>
             <a href="#" onclick="scrollToSection('experience')">About</a>
@@ -802,7 +802,17 @@
         });
 
         function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+
+            // prevent the default '#' jump
+            if (event) event.preventDefault();
+            // Scroll to section
+            document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+
+            // Close mobile menu if open
+            const navMenu = document.getElementById("mainNav");
+            if (navMenu.classList.contains("active")) {
+                navMenu.classList.remove("active");
+            }
         }
 
         // Fetch Experience and Projects from API (auto-loaded from your docx)

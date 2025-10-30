@@ -6,11 +6,11 @@
     <title>Sandhya Arcot – AI Resume Assistant</title>
     <style>
         :root {
-            --primary: #0078d7;
-            --accent: #a855f7;
-            --bg: #0a0c1b;
-            --text: #e6e6e6;
-            --muted: #9ca3af;
+            --primary: #2563eb; /* Deep Blue - professional */
+            --accent: #8b5cf6; /* Soft Violet - modern highlight */
+            --bg: #0b0e19; /* Improved dark background */
+            --text: #f3f4f6; /* Softer, high contrast text */
+            --muted: #94a3b8; /* Neutral cool gray */
         }
 
         body {
@@ -79,7 +79,15 @@
                 transition: max-height 0.4s ease;
                 border-top: 1px solid #1f2937;
             }
+            .experience-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
 
+            .experience-card {
+                min-width: unset;
+                min-height: 350px;
+            }
             .chat-window {
                 width: 90%;
                 height: 60%;
@@ -440,13 +448,6 @@
                 font-size: 0.95rem;
             }
 
-            .experience-container {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                margin-top: 20px;
-            }
-
             .company-card {
                 background-color: #111326;
                 border-radius: 16px;
@@ -537,7 +538,6 @@
                 gap: 40px; /* ensures gap between columns and rows */
                 justify-content: center;
                 align-items: stretch;
-                margin-top: 40px;
                 padding: 0 20px; /* adds small padding from container edges */
             }
 
@@ -576,21 +576,27 @@
                     line-height: 1.4;
                 }
 
-            .experience-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-                gap: 40px;
-                margin-top: 40px;
-            }
+        .experience-container {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(380px, 1fr)); /* two per row with min width */
+            gap: 40px;
+            margin-top: 40px;
+            justify-content: center;
+        }
 
-            .experience-card {
-                background-color: #111326;
-                border-radius: 16px;
-                padding: 25px 30px;
-                box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
-                text-align: left;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
+        .experience-card {
+            background-color: #111326;
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-width: 380px;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* keep text at the top */
+        }
 
                 .experience-card:hover {
                     transform: translateY(-5px);
@@ -628,6 +634,25 @@
                 color: var(--accent);
                 margin-right: 8px;
                 margin-top: 5px;
+            }
+        .chat-header {
+            position: relative;
+        }
+
+        .chat-close-btn {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+            .chat-close-btn:hover {
+                color: var(--accent);
             }
 
         
@@ -755,7 +780,10 @@
     </div>
 
     <div class="chat-window" id="chatWindow">
-        <div class="chat-header">Sandhya’s AI Assistant</div>
+        <div class="chat-header">
+            Sandhya’s AI Assistant
+            <button class="chat-close-btn" onclick="toggleChat()">✖</button>
+        </div>
         <div class="chat-messages" id="chatMessages">
             <div>👋 Hi! Ask me anything about Sandhya’s experience or projects.</div>
         </div>
@@ -857,7 +885,12 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-      
+        chatInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
